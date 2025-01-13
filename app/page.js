@@ -1,9 +1,13 @@
+"use client";
+import StatsCards from "@/Components/StatsCards";
 import Wrapper from "@/Components/Wrapper";
 const Home = () => {
   return (
-    <Wrapper>
-      <div className="pt-11">Home</div>
-    </Wrapper>
+    <section className="w-full py-[80px] px-2">
+      <Wrapper>
+        <StatsCards />
+      </Wrapper>
+    </section>
   );
 };
 
