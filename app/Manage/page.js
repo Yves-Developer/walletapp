@@ -1,10 +1,10 @@
 import Wrapper from "@/Components/Wrapper";
-const Home = () => {
+const Manage = () => {
   return (
     <Wrapper>
-      <div className="pt-11">Home</div>
+      <div className="pt-11">Manage</div>
     </Wrapper>
   );
 };
 
-export default Home;
+export default Manage;
