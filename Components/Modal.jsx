@@ -10,6 +10,8 @@ import {
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import { ComboboxDemo } from "./ui/combobox";
+import { DatePickerDemo } from "./ui/datepicker";
 
 const Modal = ({ btnCaption, title }) => {
   return (
@@ -45,6 +47,10 @@ const Modal = ({ btnCaption, title }) => {
               className="col-span-3"
             />
           </div>
+        </div>
+        <div className="flex w-full gap-2">
+          <ComboboxDemo />
+          <DatePickerDemo />
         </div>
         <DialogFooter>
           <Button type="submit">{title}</Button>
