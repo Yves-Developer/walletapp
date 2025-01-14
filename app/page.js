@@ -1,30 +1,19 @@
-"use client";
-import AreaChart from "@/Components/GradientAreaChart";
 import Container from "@/Components/Container";
-import StatsCards from "@/Components/StatsCards";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Separator } from "@/Components/ui/separator";
 import Wrapper from "@/Components/Wrapper";
 import GradientAreaChart from "@/Components/GradientAreaChart";
 import SummaryCard from "@/Components/SummaryCard";
-import { DateRangePicker } from "@/Components/ui/date-range-picker";
+import Overview from "@/Components/Overview";
 const Home = () => {
   return (
     <section className="w-full py-[80px] px-2">
       <Wrapper>
-        <StatsCards />
+        <Overview />
         <Container>
           <Card>
             <div className="flex justify-between p-3">
               <CardTitle>Monthly Overview</CardTitle>
-              <DateRangePicker
-                onUpdate={(values) => console.log(values)}
-                initialDateFrom="2023-01-01"
-                initialDateTo="2023-12-31"
-                align="start"
-                locale="en-GB"
-                showCompare={false}
-              />
             </div>
             <CardContent>
               <GradientAreaChart />

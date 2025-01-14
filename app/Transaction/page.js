@@ -1,6 +1,6 @@
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
-
+import Wrapper from "@/Components/Wrapper";
 export default function DemoPage() {
   const data = [
     {
@@ -55,8 +55,10 @@ export default function DemoPage() {
   data.push(...demoData);
 
   return (
-    <div className="container mx-auto py-20">
-      <DataTable columns={columns} data={data} />
+    <div className="py-20">
+      <Wrapper>
+        <DataTable columns={columns} data={data} />
+      </Wrapper>
     </div>
   );
 }
