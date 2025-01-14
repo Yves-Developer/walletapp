@@ -1,16 +1,16 @@
 "use client";
 import StatsCards from "./StatsCards";
 import { Separator } from "./ui/separator";
-import { Button } from "./ui/button";
 import { DateRangePicker } from "./ui/date-range-picker";
+import Modal from "./Modal";
 const Overview = () => {
   return (
     <>
       <div className="flex justify-between items-center py-9 w-full bg-background/80 backdrop-blur-sm">
         <h2 className="text-2xl font-bold text-foreground">Overview</h2>
         <div className="flex space-x-2">
-          <Button>New Income</Button>
-          <Button>New Expense</Button>
+          <Modal btnCaption="New Income" title="Add Income" />
+          <Modal btnCaption="New Expense" title="Add Expense" />
           <DateRangePicker
             onUpdate={(values) => console.log(values)}
             initialDateFrom="2025-01-01"
