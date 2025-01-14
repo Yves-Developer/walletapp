@@ -13,7 +13,7 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed w-full z-10">
+    <nav className="fixed w-full z-10 bg-background/80 backdrop-blur-sm">
       <Wrapper>
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
