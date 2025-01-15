@@ -9,8 +9,8 @@ const Overview = () => {
       <div className="flex justify-between items-center py-9 w-full bg-background/80 backdrop-blur-sm">
         <h2 className="text-2xl font-bold text-foreground">Overview</h2>
         <div className="flex space-x-2">
-          <Modal btnCaption="New Income" title="Add Income" />
-          <Modal btnCaption="New Expense" title="Add Expense" />
+          <Modal btnCaption="New Income" title="Add Income" type="Income" />
+          <Modal btnCaption="New Expense" title="Add Expense" type="Expense" />
           <DateRangePicker
             onUpdate={(values) => console.log(values)}
             initialDateFrom="2025-01-01"

@@ -6,53 +6,86 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { ComboboxDemo } from "./ui/combobox";
-import { DatePickerDemo } from "./ui/datepicker";
-
-const Modal = ({ btnCaption, title }) => {
+import { Combobox } from "./ui/combobox";
+import { DatePicker } from "./ui/datepicker";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectValue,
+  SelectItem,
+} from "./ui/select";
+const Modal = ({ btnCaption, title, type }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>{btnCaption}</Button>
+        {type == "Income" ? (
+          <Button>{btnCaption}</Button>
+        ) : (
+          <Button variant="outline">{btnCaption}</Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>
-            Make changes to your budget here. Click {title} when you're done.
-          </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-left">
-              Name
+            <Label htmlFor="account" className="text-left">
+              Account Name
             </Label>
             <Input
-              id="name"
-              placeholder="Enter your name"
+              id="account"
               className="col-span-3"
+              placeholder="Enter Account Name (required)"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-left">
-              Username
+            <Label htmlFor="description" className="text-left">
+              Description
             </Label>
             <Input
-              id="username"
-              placeholder="Enter your username"
+              id="descriotion"
               className="col-span-3"
+              placeholder="Enter Description (Optional)"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="amount" className="text-left">
+              Amount
+            </Label>
+            <Input
+              type="number"
+              id="amount"
+              className="col-span-3"
+              placeholder="Enter Amount (required)"
+              required
             />
           </div>
         </div>
-        <div className="flex w-full gap-2">
-          <ComboboxDemo />
-          <DatePickerDemo />
+        <div>
+          <Combobox />
+        </div>
+        <div className="grid gap-4 py-4">
+          <Select>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select Budget" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="dark">$1000</SelectItem>
+            </SelectContent>
+          </Select>
+          <DatePicker />
         </div>
         <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
           <Button type="submit">{title}</Button>
         </DialogFooter>
       </DialogContent>

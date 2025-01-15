@@ -10,23 +10,92 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import clsx from "clsx";
 
 export const columns = [
   {
-    accessorKey: "status",
-    header: "Status",
-  },
-  {
-    accessorKey: "email",
+    accessorKey: "category",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Email
+          Category
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "description",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Description
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "account",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Account
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "date",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "type",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Type
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const type = row.getValue("type");
+      const colorClass = type === "Income" ? "text-green-500" : "text-red-500";
+      const bgClass = type === "Income" ? "bg-green-500/10" : "bg-red-500/10";
+      return (
+        <div
+          className={clsx(
+            "flex items-center justify-center rounded-sm px-4 py-2 font-medium",
+            colorClass,
+            bgClass
+          )}
+        >
+          {type}
+        </div>
       );
     },
   },
@@ -55,7 +124,6 @@ export const columns = [
   },
   {
     id: "actions",
-    header: () => <div className="text-right">Actions</div>,
     cell: ({ row }) => {
       const payment = row.original;
 
@@ -70,14 +138,8 @@ export const columns = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(payment.id)}
-              >
-                Copy payment ID
-              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>View customer</DropdownMenuItem>
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
+              <DropdownMenuItem>Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

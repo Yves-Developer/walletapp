@@ -1,59 +1,63 @@
+import { Description } from "@radix-ui/react-dialog";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import Wrapper from "@/Components/Wrapper";
 export default function DemoPage() {
   const data = [
     {
-      id: "728ed52f",
+      category: "Food",
       amount: 100,
-      status: "pending",
-      email: "m@example.com",
+      account: "Mobile Money",
+      description: "Rice and Stew",
+      type: "Expense",
+      date: "2021-09-01",
+    },
+    {
+      category: "Salary",
+      amount: 100,
+      account: "Equity Bank",
+      description: "Monthly Salary",
+      type: "Income",
+      date: "2021-09-30",
     },
     // ...
   ];
-  const demoData = [
+  data.push(
     {
-      id: "1a2b3c4d",
-      amount: 250,
-      status: "completed",
-      email: "a@example.com",
+      category: "Transport",
+      amount: 50,
+      account: "Cash",
+      description: "Bus fare",
+      type: "Expense",
+      date: "2021-09-02",
     },
     {
-      id: "2b3c4d5e",
-      amount: 150,
-      status: "failed",
-      email: "b@example.com",
+      category: "Entertainment",
+      amount: 75,
+      account: "Credit Card",
+      description: "Movie tickets",
+      type: "Expense",
+      date: "2021-09-03",
     },
     {
-      id: "3c4d5e6f",
-      amount: 300,
-      status: "pending",
-      email: "c@example.com",
-    },
-    {
-      id: "4d5e6f7g",
-      amount: 450,
-      status: "completed",
-      email: "d@example.com",
-    },
-    {
-      id: "5e6f7g8h",
-      amount: 500,
-      status: "failed",
-      email: "e@example.com",
-    },
-  ];
-  for (let i = 6; i <= 35; i++) {
-    demoData.push({
-      id: `${i}e${i + 1}f${i + 2}g`,
-      amount: Math.floor(Math.random() * 500) + 100,
-      status: ["pending", "completed", "failed"][Math.floor(Math.random() * 3)],
-      email: `${String.fromCharCode(96 + i)}@example.com`,
+      category: "Freelance",
+      amount: 200,
+      account: "PayPal",
+      description: "Project payment",
+      type: "Income",
+      date: "2021-09-15",
+    }
+  );
+  for (let i = 0; i < 20; i++) {
+    data.push({
+      category: "Miscellaneous",
+      amount: Math.floor(Math.random() * 100) + 1,
+      account: "Bank Account",
+      description: `Random expense ${i + 1}`,
+      type: "Expense",
+      date: `2021-09-${i + 4}`,
     });
   }
-
-  data.push(...demoData);
-
   return (
     <div className="py-20">
       <Wrapper>

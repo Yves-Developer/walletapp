@@ -26,7 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { set } from "date-fns";
-import { ChevronDown } from "lucide-react";
+import { Download, Settings2 } from "lucide-react";
 
 export function DataTable({ columns, data }) {
   const [sorting, setSorting] = React.useState([]);
@@ -51,41 +51,49 @@ export function DataTable({ columns, data }) {
 
   return (
     <>
-      <div className="flex items-center py-4">
+      <div className="flex items-center justify-between py-4">
         <Input
-          placeholder="Filter emails..."
-          value={table.getColumn("email")?.getFilterValue() ?? ""}
+          placeholder="Filter categorys..."
+          value={table.getColumn("category")?.getFilterValue() ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("category")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-      </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+        <div className="flex items-center space-x-2">
           <Button variant="outline" className="ml-auto">
-            Columns
-            <ChevronDown className="ml-2" />
+            <Download />
+            Export CSV
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {table
-            .getAllColumns()
-            .filter((column) => column.getCanHide())
-            .map((column) => {
-              return (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  className="capitalize"
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                >
-                  {column.id}
-                </DropdownMenuCheckboxItem>
-              );
-            })}
-        </DropdownMenuContent>
-      </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                <Settings2 />
+                View
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
