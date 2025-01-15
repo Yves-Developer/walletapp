@@ -12,3 +12,17 @@ datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  userId      String   // Clerk User ID
+  category    String
+  description String?
+  account     String
+  type        String
+  amount      Float
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId, date], name: "user_date_index")
+}
