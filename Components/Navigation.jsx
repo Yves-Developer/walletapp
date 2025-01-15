@@ -1,5 +1,5 @@
 "use client";
-
+import { UserButton } from "@clerk/clerk-react";
 import { useState } from "react";
 import Link from "next/link";
 import NavLink from "./NavLink";
@@ -25,10 +25,9 @@ const Navigation = () => {
           </div>
           <NavLink />
           <div className="hidden md:block">
-            <Avatar>
-              <AvatarImage src="https://github.com/Yves-Developer.png" />
-              <AvatarFallback>YD</AvatarFallback>
-            </Avatar>
+            <div>
+              <UserButton afterSignOutUrl="/sign-in" />
+            </div>
           </div>
           <div className="-mr-2 flex md:hidden">
             <Button
