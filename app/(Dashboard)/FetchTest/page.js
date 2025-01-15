@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@components/ui/Button";
+import { Button } from "@/Components/ui/button";
 import { useState } from "react";
 
 const FetchTest = () => {
@@ -8,12 +8,12 @@ const FetchTest = () => {
   // Sample Data to Send
   const sampleData = {
     userId: "user_123",
-    category: "Groceries",
-    description: "Weekly shopping",
-    account: "Bank Account",
-    type: "Expense",
-    amount: 50.0,
-    date: "2025-01-15",
+    category: "Salary",
+    description: "Paycheck",
+    account: "Paypal",
+    type: "Income",
+    amount: 500.0,
+    date: "2025-04-15",
   };
 
   const sendData = async () => {
@@ -36,8 +36,8 @@ const FetchTest = () => {
   };
 
   return (
-    <div>
-      <Button onClick={sendData}>Send Data to API</Button>
+    <div className="px-[100px] py-20">
+      <Button onClick={sendData}>Send Data</Button>
       <p>{responseMessage}</p>
     </div>
   );
