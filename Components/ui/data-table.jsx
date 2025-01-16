@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { Papa } from "papaparse";
 import { Button } from "@/components/ui/button";
 import {
   flexRender,
@@ -25,13 +26,42 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { set } from "date-fns";
-import { Download, Settings2 } from "lucide-react";
+import { generateCsv, download, mkConfig } from "export-to-csv";
+import { Download, Settings2, Upload } from "lucide-react";
+import CSVupload from "@/app/(Dashboard)/upload/csv-upload";
 
-export function DataTable({ columns, data }) {
+export function DataTable({ columns, data, action }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
+  //csv config
+  const csvConfig = mkConfig({
+    fieldSeparator: ",",
+    decimalSeparator: ".",
+    useKeysAsHeaders: true,
+  });
+  // Handle export to CSV
+  const handleExport = (data) => {
+    const csv = generateCsv(csvConfig)(data);
+    download(csvConfig)(csv);
+  };
+  //Handle csv Upload
+  const handleFileUpload = (event) => {
+    if (!file) return;
+
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (result) => {
+        const data = result.data;
+        console.log("Data:", data);
+      },
+      error: (error) => {
+        console.error("Error parsing CSV:", error);
+      },
+    });
+  };
+  //Table Definition
   const table = useReactTable({
     data,
     columns,
@@ -48,7 +78,6 @@ export function DataTable({ columns, data }) {
       columnVisibility,
     },
   });
-
   return (
     <>
       <div className="flex items-center justify-between py-4">
@@ -61,10 +90,29 @@ export function DataTable({ columns, data }) {
           className="max-w-sm"
         />
         <div className="flex items-center space-x-2">
-          <Button variant="outline" className="ml-auto">
-            <Download />
-            Export CSV
-          </Button>
+          {action == "Export" ? (
+            <Button
+              variant="outline"
+              className="ml-auto"
+              onClick={() => {
+                const data = table.getFilteredRowModel().rows.map((row) => ({
+                  category: row.original.category,
+                  description: row.original.description,
+                  account: row.original.account,
+                  date: row.original.date,
+                  type: row.original.type,
+                  amount: row.original.amount,
+                }));
+                handleExport(data);
+              }}
+            >
+              <Download />
+              Export CSV
+            </Button>
+          ) : (
+            <CSVupload />
+          )}
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">

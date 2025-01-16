@@ -7,7 +7,6 @@ import Wrapper from "./Wrapper";
 import { Button } from "./ui/button";
 import Mobile from "./Mobile";
 import { Menu, X } from "lucide-react";
-import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);

@@ -26,3 +26,11 @@ model Transaction {
 
   @@index([userId, date], name: "user_date_index")
 }
+model Category {
+  id        Int      @id @default(autoincrement())
+  userId    String   // Clerk User ID
+  name      String
+  type      String
+  amount    Float
+  createdAt DateTime @default(now())
+}

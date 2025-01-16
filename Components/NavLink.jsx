@@ -23,10 +23,10 @@ const NavLink = () => {
           Report
         </Link>
         <Link
-          href="/Manage"
+          href="/Budget"
           className="text-muted-foreground hover:text-foreground px-3 py-2 rounded-md text-sm font-medium"
         >
-          Manage
+          Budget
         </Link>
       </div>
     </div>

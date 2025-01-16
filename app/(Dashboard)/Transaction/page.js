@@ -1,8 +1,7 @@
-import { Description } from "@radix-ui/react-dialog";
+import { DataTable } from "@/Components/ui/data-table";
 import { columns } from "./columns";
-import { DataTable } from "./data-table";
 import Wrapper from "@/Components/Wrapper";
-export default function DemoPage() {
+export default function Transaction() {
   const data = [
     {
       category: "Food",
@@ -61,7 +60,7 @@ export default function DemoPage() {
   return (
     <div className="py-20">
       <Wrapper>
-        <DataTable columns={columns} data={data} />
+        <DataTable columns={columns} data={data} action="Export" />
       </Wrapper>
     </div>
   );
