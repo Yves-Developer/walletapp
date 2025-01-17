@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,44 +28,16 @@ import {
 } from "./dialog";
 import { Label } from "./label";
 import { Input } from "./input";
-const categories = [
-  {
-    value: "salary",
-    label: "Salary",
-  },
-  {
-    value: "freelance",
-    label: "Freelance",
-  },
-  {
-    value: "investment",
-    label: "Investment",
-  },
-  {
-    value: "rent",
-    label: "Rent",
-  },
-  {
-    value: "groceries",
-    label: "Groceries",
-  },
-  {
-    value: "utilities",
-    label: "Utilities",
-  },
-  {
-    value: "entertainment",
-    label: "Entertainment",
-  },
-  {
-    value: "travel",
-    label: "Travel",
-  },
-];
 
-export function Combobox() {
+export function Combobox({ categories, onSelect }) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(""); // State to track the selected category
+
+  const handleSelect = (selectedCategory) => {
+    setValue(selectedCategory);
+    onSelect(selectedCategory); // Call the onSelect function passed from parent to update state
+    setOpen(false);
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -78,7 +49,7 @@ export function Combobox() {
           className="w-[200px] justify-between"
         >
           {value
-            ? categories.find((category) => category.value === value)?.label
+            ? categories.find((category) => category.name === value)?.name
             : "Select category..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -116,22 +87,19 @@ export function Combobox() {
                   </DialogContent>
                 </Dialog>
               </CommandItem>
-              {categories.map((category) => (
+              {categories.map((category, index) => (
                 <CommandItem
-                  key={category.value}
-                  value={category.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
-                    setOpen(false);
-                  }}
+                  key={index}
+                  value={category.name}
+                  onSelect={() => handleSelect(category.name)} // Pass selected category to the parent
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === category.value ? "opacity-100" : "opacity-0"
+                      value === category.name ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {category.label}
+                  {category.name}
                 </CommandItem>
               ))}
             </CommandGroup>

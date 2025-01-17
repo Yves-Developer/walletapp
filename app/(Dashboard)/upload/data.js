@@ -1,6 +1,6 @@
 export const sendData = async (dataObject) => {
   try {
-    const response = await fetch("/api/insertData", {
+    const response = await fetch("/api/category", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

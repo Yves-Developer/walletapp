@@ -1,10 +1,9 @@
 import { Upload } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Papa from "papaparse";
 import { Button } from "@/Components/ui/button";
-import { sendData } from "../FetchTest/data";
+import { sendData } from "./data";
 const CSVupload = () => {
-  const [result, setResult] = useState([]);
   const fileInputRef = useRef(null);
 
   const handleCSVupload = (event) => {
@@ -16,10 +15,9 @@ const CSVupload = () => {
       skipEmptyLines: true,
       complete: (parsedResult) => {
         const data = parsedResult.data;
-        setResult(data); // Store parsed data
         console.log("Parsed Data:", data);
 
-        // After successfully parsing the CSV, send the data
+        // After successfully parsing the CSV, send the data to an API endpoint:/api/category
         sendData(data)
           .then(() => {
             console.log("Data successfully sent!");

@@ -8,25 +8,25 @@ const Mobile = () => {
           href="/"
           className="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium"
         >
-          Home
+          Dashboard
         </Link>
         <Link
-          href="/features"
+          href="/Transaction"
           className="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium"
         >
-          Features
+          Transaction
         </Link>
         <Link
-          href="/pricing"
+          href="/Report"
           className="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium"
         >
-          Pricing
+          Report
         </Link>
         <Link
-          href="/about"
+          href="/Budget"
           className="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium"
         >
-          About
+          Budget
         </Link>
       </div>
     </div>

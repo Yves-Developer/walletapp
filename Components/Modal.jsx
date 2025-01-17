@@ -1,7 +1,7 @@
+"use client";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -13,22 +13,81 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Combobox } from "./ui/combobox";
 import { DatePicker } from "./ui/datepicker";
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectValue,
-  SelectItem,
-} from "./ui/select";
+import { useState } from "react";
+import { useAuth } from "@clerk/nextjs";
 const Modal = ({ btnCaption, title, type }) => {
+  const { userId } = useAuth();
+  const [account, setAccount] = useState("");
+  const [description, setDescription] = useState("");
+  const [amount, setAmount] = useState("");
+  const [category, setCategory] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedDate, pickDate] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [cat, setCat] = useState("");
+
+  const fetchData = async (type) => {
+    if (!type) return;
+
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/category/${type}`);
+      const data = await response.json();
+      setCategory(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+    fetchData(type);
+  };
+
+  const handleSubmit = async () => {
+    const payload = {
+      userId,
+      account,
+      description,
+      amount: parseFloat(amount),
+      category: cat,
+      type,
+      date: selectedDate,
+    };
+    console.log(payload);
+
+    try {
+      const response = await fetch("/api/transaction", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit data");
+      }
+
+      const result = await response.json();
+      console.log("Submission successful:", result);
+      setIsModalOpen(false); // Close the modal on successful submission
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
+  };
+
   return (
-    <Dialog>
+    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
-        {type == "Income" ? (
-          <Button>{btnCaption}</Button>
-        ) : (
-          <Button variant="outline">{btnCaption}</Button>
-        )}
+        <Button
+          variant={type === "Income" ? "default" : "outline"}
+          onClick={handleModalOpen}
+        >
+          {btnCaption}
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -42,6 +101,8 @@ const Modal = ({ btnCaption, title, type }) => {
             <Input
               id="account"
               className="col-span-3"
+              value={account}
+              onChange={(e) => setAccount(e.target.value)}
               placeholder="Enter Account Name (required)"
             />
           </div>
@@ -50,8 +111,10 @@ const Modal = ({ btnCaption, title, type }) => {
               Description
             </Label>
             <Input
-              id="descriotion"
+              id="description"
               className="col-span-3"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter Description (Optional)"
             />
           </div>
@@ -63,30 +126,26 @@ const Modal = ({ btnCaption, title, type }) => {
               type="number"
               id="amount"
               className="col-span-3"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
               placeholder="Enter Amount (required)"
               required
             />
           </div>
         </div>
         <div>
-          <Combobox />
+          <Combobox categories={category} onSelect={setCat} />
         </div>
         <div className="grid gap-4 py-4">
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select Budget" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="dark">$1000</SelectItem>
-            </SelectContent>
-          </Select>
-          <DatePicker />
+          <DatePicker onPick={pickDate} />
         </div>
         <DialogFooter>
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button type="submit">{title}</Button>
+          <Button type="button" onClick={handleSubmit}>
+            {title}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
