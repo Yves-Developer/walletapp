@@ -3,7 +3,12 @@ import StatsCards from "./StatsCards";
 import { Separator } from "./ui/separator";
 import { DateRangePicker } from "./ui/date-range-picker";
 import Modal from "./Modal";
-const Overview = () => {
+import { useState } from "react";
+const Overview = ({ trackDate }) => {
+  const [values, setValues] = useState({
+    from: new Date(new Date().setDate(new Date().getDate() - 30)), // 30 days ago
+    to: new Date(), // Today
+  });
   return (
     <>
       <div className="flex flex-col items-start sm:flex-row sm:items-center justify-between py-6 sm:py-9 w-full bg-background/80 backdrop-blur-sm">
@@ -20,9 +25,12 @@ const Overview = () => {
             />
           </div>
           <DateRangePicker
-            onUpdate={(values) => console.log(values)}
-            initialDateFrom="2025-01-01"
-            initialDateTo="2025-01-31"
+            onUpdate={(newValues) => {
+              setValues(newValues.range);
+              trackDate(newValues.range);
+            }}
+            initialDateFrom={values.from.toISOString().split("T")[0]}
+            initialDateTo={values.to.toISOString().split("T")[0]}
             align="start"
             locale="en-GB"
             showCompare={false}
@@ -30,7 +38,7 @@ const Overview = () => {
         </div>
       </div>
       <Separator className="mb-4 mt-2" />
-      <StatsCards />
+      <StatsCards dateRange={values} />
     </>
   );
 };

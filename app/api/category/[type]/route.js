@@ -49,10 +49,14 @@ export async function GET(request, { params }) {
   if (!type) {
     return NextResponse.json({ message: "Type is required" }, { status: 400 });
   }
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
 
   try {
     const data = await prisma.category.findMany({
-      where: { type: type },
+      where: { type, userId },
       select: {
         name: true,
         amount: true,

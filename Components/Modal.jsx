@@ -54,7 +54,7 @@ const Modal = ({ btnCaption, title, type }) => {
       amount: parseFloat(amount),
       category: cat,
       type,
-      date: selectedDate,
+      date: new Date(selectedDate).toISOString(),
     };
     console.log(payload);
 

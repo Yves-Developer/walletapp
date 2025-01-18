@@ -2,8 +2,29 @@
 import { Card } from "./ui/card";
 import CountUp from "react-countup";
 import { TrendingDown, TrendingUp, Wallet } from "lucide-react";
+import { useEffect, useState } from "react";
 
-const StatsCards = () => {
+const StatsCards = ({ dateRange }) => {
+  const [stats, setStats] = useState({ income: 0, expense: 0 });
+  const from = dateRange?.from
+    ? new Date(dateRange.from).toISOString()
+    : new Date(new Date().setDate(new Date().getDate() - 30)).toISOString();
+  const to = dateRange?.to
+    ? new Date(dateRange.to).toISOString()
+    : new Date().toISOString();
+
+  useEffect(() => {
+    fetch(`/api/balance?to=${to}&from=${from}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setStats({ income: data.income, expense: data.expense });
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error.message);
+      });
+  }, [from, to]);
+
   return (
     <div className="flex flex-col sm:flex-row w-full gap-4">
       <Card className="flex-1 h-24 flex items-center gap-4 p-4">
@@ -13,7 +34,7 @@ const StatsCards = () => {
           <CountUp
             preserveValue
             redraw={false}
-            end={3000}
+            end={stats.income}
             prefix="$"
             className="text-2xl"
             decimal="2"
@@ -28,7 +49,7 @@ const StatsCards = () => {
           <CountUp
             preserveValue
             redraw={false}
-            end={2000}
+            end={stats.expense}
             prefix="$"
             className="text-2xl"
             decimal="2"
@@ -43,7 +64,7 @@ const StatsCards = () => {
           <CountUp
             preserveValue
             redraw={false}
-            end={1000}
+            end={stats.income - stats.expense}
             prefix="$"
             className="text-2xl"
             decimal="2"

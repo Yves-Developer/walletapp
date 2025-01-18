@@ -12,9 +12,10 @@ datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
+
 model Transaction {
   id          Int      @id @default(autoincrement())
-  userId      String   // Clerk User ID
+  userId      String // Clerk User ID
   category    String
   description String?
   account     String
@@ -26,11 +27,36 @@ model Transaction {
 
   @@index([userId, date], name: "user_date_index")
 }
+
 model Category {
   id        Int      @id @default(autoincrement())
-  userId    String   // Clerk User ID
+  userId    String // Clerk User ID
   name      String
   type      String
   amount    Float
   createdAt DateTime @default(now())
+}
+
+model MonthHistory {
+  id      Int    @id @default(autoincrement())
+  userId  String // Clerk User ID
+  day     Int
+  month   Int
+  year    Int
+  income  Float // Use Decimal for accurate financial data
+  expense Float // Use Decimal for accurate financial data
+
+  @@unique([userId, day, month, year])
+  @@index([userId, day, month, year]) // Compound index for efficient querying
+}
+
+model YearHistory {
+  userId  String // Clerk User ID
+  month   Int
+  year    Int
+  income  Float // Use Decimal for accurate financial data
+  expense Float // Use Decimal for accurate financial data
+
+  @@unique([userId, month, year]) // Compound index for efficient querying
+  @@index([userId, month, year])
 }

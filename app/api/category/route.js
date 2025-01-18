@@ -45,8 +45,14 @@ export async function POST(request) {
 }
 
 export async function GET() {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const data = await prisma.category.findMany({
+      where: { userId },
       select: {
         name: true,
         type: true,
