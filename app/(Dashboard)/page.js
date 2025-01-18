@@ -8,12 +8,22 @@ import SummaryCard from "@/Components/SummaryCard";
 import Overview from "@/Components/Overview";
 import { useEffect, useState } from "react";
 import { calculateUtilization } from "@/Utils/helper";
+import { Tabs, TabsTrigger, TabsList } from "@/Components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/Components/ui/select";
 const Home = () => {
   const [seletcedDate, setSelectedDate] = useState({
     from: new Date(new Date().setDate(new Date().getDate() - 30)), //from last 30days Default
     to: new Date(), //now default
   });
+  const [selectedTab, setSelectedTab] = useState("month");
   const [info, setInfo] = useState([]);
+  const [year, setYear] = useState("2025");
   const from = new Date(seletcedDate.from).toISOString();
   const to = new Date(seletcedDate.to).toISOString();
   useEffect(() => {
@@ -34,9 +44,28 @@ const Home = () => {
           <Card>
             <div className="flex justify-between p-3">
               <CardTitle>Monthly Overview</CardTitle>
+              <Select value={year} onValueChange={setYear}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="2025">2025</SelectItem>
+                  <SelectItem value="2024">2024</SelectItem>
+                </SelectContent>
+              </Select>
+              <Tabs
+                defaultValue="month"
+                value={selectedTab}
+                onValueChange={setSelectedTab}
+              >
+                <TabsList>
+                  <TabsTrigger value="month">Month</TabsTrigger>
+                  <TabsTrigger value="year">Year</TabsTrigger>
+                </TabsList>
+              </Tabs>
             </div>
             <CardContent>
-              <GradientAreaChart />
+              <GradientAreaChart tabSelected={selectedTab} year={year} />
             </CardContent>
           </Card>
           <Card>
