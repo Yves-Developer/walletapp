@@ -7,15 +7,24 @@ import GradientAreaChart from "@/Components/GradientAreaChart";
 import SummaryCard from "@/Components/SummaryCard";
 import Overview from "@/Components/Overview";
 import { useEffect, useState } from "react";
+import { calculateUtilization } from "@/Utils/helper";
 const Home = () => {
   const [seletcedDate, setSelectedDate] = useState({
     from: new Date(new Date().setDate(new Date().getDate() - 30)), //from last 30days Default
     to: new Date(), //now default
   });
+  const [info, setInfo] = useState([]);
   const from = new Date(seletcedDate.from).toISOString();
   const to = new Date(seletcedDate.to).toISOString();
   useEffect(() => {
-    console.log("from:", from, "  to:", to);
+    fetch(`/api/summary?from=${from}&to=${to}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setInfo(calculateUtilization(data).slice(0, 3));
+      })
+      .catch((error) => {
+        console.error("error:", error.message);
+      });
   }, [from, to]);
   return (
     <section className="w-full py-[80px] px-2">
@@ -37,14 +46,25 @@ const Home = () => {
             </CardHeader>
             <CardContent>
               <div className="flex flex-col gap-2">
-                <SummaryCard
-                  budget="$200"
-                  isIncome={false}
-                  amount="$100"
-                  util={(100 / 200) * 100}
-                  description="Food and Drinks"
-                />
-                <SummaryCard
+                {info.map((card) => (
+                  <SummaryCard
+                    key={card.category}
+                    budget={card.budget}
+                    isIncome={card.type === "Income"}
+                    amount={`$${card.totalAmount}`}
+                    util={card.utilization > 100 ? 100 : card.utilization}
+                    utilValue={card.utilization}
+                    description={card.category}
+                    color={
+                      card.utilization > 100
+                        ? card.type === "Income"
+                          ? "bg-green-600"
+                          : "bg-red-600"
+                        : "bg-primary"
+                    }
+                  />
+                ))}
+                {/* <SummaryCard
                   budget="$500"
                   isIncome={true}
                   amount="$400"
@@ -57,7 +77,7 @@ const Home = () => {
                   amount="$10"
                   util={(10 / 100) * 100}
                   description="Payments"
-                />
+                /> */}
               </div>
             </CardContent>
           </Card>

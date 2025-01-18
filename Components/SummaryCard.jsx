@@ -1,6 +1,14 @@
 import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
 import clsx from "clsx";
-const SummaryCard = ({ description, amount, util, budget, isIncome }) => {
+const SummaryCard = ({
+  description,
+  amount,
+  util,
+  budget,
+  isIncome,
+  color,
+  utilValue,
+}) => {
   return (
     <Card>
       <CardHeader>
@@ -14,7 +22,7 @@ const SummaryCard = ({ description, amount, util, budget, isIncome }) => {
       <CardContent>
         <div className="w-full h-1 bg-gray-300">
           <div
-            className="h-full bg-primary"
+            className={clsx("h-full", color)}
             style={{ width: `${util}%` }}
           ></div>
         </div>
@@ -22,7 +30,7 @@ const SummaryCard = ({ description, amount, util, budget, isIncome }) => {
       <CardFooter className="flex justify-between">
         <h3>
           {isIncome ? "Achieved:" : "Utilisation:"}
-          {util}%
+          {utilValue}%
         </h3>
         <span>Budget: {budget}</span>
       </CardFooter>
