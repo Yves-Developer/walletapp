@@ -10,7 +10,7 @@ export async function GET(request) {
   const timeframe = searchParams.get("timeframe");
   const year = parseInt(searchParams.get("year"));
   const month = parseInt(searchParams.get("month"));
-  console.log(year);
+
   if (!userId) {
     redirect("/sign-in");
   }

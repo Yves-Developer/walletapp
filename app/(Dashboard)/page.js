@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/Components/ui/select";
+import { Skeleton } from "@/Components/ui/skeleton";
 const Home = () => {
   const [seletcedDate, setSelectedDate] = useState({
     from: new Date(new Date().setDate(new Date().getDate() - 30)), //from last 30days Default
@@ -28,7 +29,10 @@ const Home = () => {
   const from = new Date(seletcedDate.from).toISOString();
   const to = new Date(seletcedDate.to).toISOString();
   const [item, setItem] = useState([new Date().getFullYear()]);
+  const [summaryLoading, setSummaryLoading] = useState(false);
+  const [periodsLoading, setPeriodsLoading] = useState(false);
   useEffect(() => {
+    setSummaryLoading(true);
     fetch(`/api/summary?from=${from}&to=${to}`)
       .then((response) => response.json())
       .then((data) => {
@@ -36,9 +40,12 @@ const Home = () => {
       })
       .catch((error) => {
         console.error("error:", error.message);
-      });
+      })
+      .finally(() => setSummaryLoading(false));
   }, [from, to]);
+
   useEffect(() => {
+    setPeriodsLoading(true);
     fetch(`/api/history-period`)
       .then((response) => response.json())
       .then((data) => {
@@ -46,7 +53,8 @@ const Home = () => {
       })
       .catch((error) => {
         console.error("error:", error.message);
-      });
+      })
+      .finally(() => setPeriodsLoading(false));
   }, []);
   return (
     <section className="w-full py-[80px] px-2">
@@ -65,18 +73,22 @@ const Home = () => {
                   <TabsTrigger value="year">Year</TabsTrigger>
                 </TabsList>
               </Tabs>
-              <Select value={year} onValueChange={setYear}>
-                <SelectTrigger className="w-[90px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {item.map((i, index) => (
-                    <SelectItem value={String(i)} key={index}>
-                      {i}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {periodsLoading ? (
+                <Skeleton className="w-[90px] h-[20px]" />
+              ) : (
+                <Select value={year} onValueChange={setYear}>
+                  <SelectTrigger className="w-[90px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {item.map((i, index) => (
+                      <SelectItem value={String(i)} key={index}>
+                        {i}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
               {selectedTab === "month" && (
                 <Select value={month} onValueChange={setMonth}>
                   <SelectTrigger className="w-[130px]">
@@ -112,40 +124,30 @@ const Home = () => {
               <Separator className="mt-1" />
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col gap-2">
-                {info.map((card) => (
-                  <SummaryCard
-                    key={card.category}
-                    budget={card.budget}
-                    isIncome={card.type === "Income"}
-                    amount={`$${card.totalAmount}`}
-                    util={card.utilization > 100 ? 100 : card.utilization}
-                    utilValue={card.utilization}
-                    description={card.category}
-                    color={
-                      card.utilization > 100
-                        ? card.type === "Income"
-                          ? "bg-green-600"
-                          : "bg-red-600"
-                        : "bg-primary"
-                    }
-                  />
-                ))}
-                {/* <SummaryCard
-                  budget="$500"
-                  isIncome={true}
-                  amount="$400"
-                  util={(400 / 500) * 100}
-                  description="Salary"
-                />
-                <SummaryCard
-                  budget="$100"
-                  isIncome={false}
-                  amount="$10"
-                  util={(10 / 100) * 100}
-                  description="Payments"
-                /> */}
-              </div>
+              {summaryLoading ? (
+                <Skeleton className="w-full h-[300px]" />
+              ) : (
+                <div className="flex flex-col gap-2">
+                  {info.map((card) => (
+                    <SummaryCard
+                      key={card.category}
+                      budget={card.budget}
+                      isIncome={card.type === "Income"}
+                      amount={`$${card.totalAmount}`}
+                      util={card.utilization > 100 ? 100 : card.utilization}
+                      utilValue={card.utilization}
+                      description={card.category}
+                      color={
+                        card.utilization > 100
+                          ? card.type === "Income"
+                            ? "bg-green-600"
+                            : "bg-red-600"
+                          : "bg-primary"
+                      }
+                    />
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </Container>
