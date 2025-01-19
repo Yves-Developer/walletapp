@@ -7,7 +7,6 @@ export async function POST(request) {
   const { userId } = await auth();
   const body = await request.json();
 
-  // Make sure the body contains the correct data format
   if (!Array.isArray(body)) {
     return NextResponse.json(
       { message: "Invalid data format. Expected an array." },
@@ -16,20 +15,34 @@ export async function POST(request) {
   }
 
   try {
-    // Prepare the data for insertion by ensuring 'amount' is a number
+    for (const item of body) {
+      const existingCategory = await prisma.category.findUnique({
+        where: {
+          userId_name: {
+            userId: userId,
+            name: item.category,
+          },
+        },
+      });
+
+      if (existingCategory) {
+        return NextResponse.json({
+          error: `Category "${item.category}" already exists.`,
+        });
+      }
+    }
+
     const dataToInsert = body.map((item) => ({
       userId: userId,
       name: item.category,
       type: item.type,
-      amount: parseFloat(item.amount), // Ensure amount is a number
+      amount: parseFloat(item.amount),
     }));
 
-    // Insert the data into the database using Prisma
     const result = await prisma.category.createMany({
       data: dataToInsert,
     });
 
-    // Return a success response with the count of inserted records
     return NextResponse.json({
       message: `${result.count} records inserted successfully.`,
     });
@@ -40,7 +53,7 @@ export async function POST(request) {
       { status: 500 }
     );
   } finally {
-    await prisma.$disconnect(); // Ensure Prisma disconnects after operation
+    await prisma.$disconnect();
   }
 }
 

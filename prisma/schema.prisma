@@ -29,12 +29,14 @@ model Transaction {
 }
 
 model Category {
-  id        Int      @id @default(autoincrement())
-  userId    String // Clerk User ID
-  name      String
-  type      String
-  amount    Float
-  createdAt DateTime @default(now())
+  userId     String // Clerk User ID
+  name       String
+  type       String
+  amount     Float
+  budgetLeft Float    @default(0)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, name])
 }
 
 model MonthHistory {

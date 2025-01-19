@@ -8,20 +8,34 @@ export async function POST(request) {
   if (!userId) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
-  const body = await request.json();
-
+  const { account, description, amount, category, budgetLeft, type, date } =
+    await request.json();
+  const body = {
+    userId,
+    account,
+    description,
+    amount: parseFloat(amount),
+    category,
+    type,
+    date: new Date(date).toISOString(),
+  };
   try {
     const date = new Date(body.date);
     await prisma.$transaction([
       prisma.transaction.create({
         data: body,
       }),
+      //Update remaining budget in category
+      prisma.category.update({
+        where: { userId_name: { userId, name: body.category } },
+        data: { budgetLeft: parseFloat(budgetLeft) },
+      }),
       // MonthHistory Aggregate Table
       prisma.monthHistory.upsert({
         where: {
           userId_day_month_year: {
             userId,
-            day: date.getUTCDay(),
+            day: date.getUTCDate(),
             month: date.getUTCMonth(),
             year: date.getUTCFullYear(),
           },
@@ -72,7 +86,7 @@ export async function POST(request) {
 
     // Return a success response with the count of inserted records
     return NextResponse.json({
-      message: `Records inserted successfully.`,
+      message: `Transaction inserted successfully.`,
     });
   } catch (error) {
     console.error("Error inserting data:", error.message);

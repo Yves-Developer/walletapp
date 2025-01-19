@@ -20,7 +20,6 @@ export default function Budget() {
           };
         });
         setData(formattedData);
-        console.log("Data fetched:", formattedData);
       })
       .catch((error) => console.error("Error fetching data:", error))
       .finally(() => setBudgetLoading(false));

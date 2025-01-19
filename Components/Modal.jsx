@@ -15,27 +15,37 @@ import { Combobox } from "./ui/combobox";
 import { DatePicker } from "./ui/datepicker";
 import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
+import { useToast } from "@/hooks/use-toast";
 const Modal = ({ btnCaption, title, type }) => {
   const { userId } = useAuth();
   const [account, setAccount] = useState("");
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
+  const [budget, setBudget] = useState(null);
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedDate, pickDate] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [cat, setCat] = useState("");
-
+  const { toast } = useToast();
   const fetchData = async (type) => {
     if (!type) return;
 
     setLoading(true);
     try {
       const response = await fetch(`/api/category/${type}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch categories for type: ${type}`);
+      }
       const data = await response.json();
       setCategory(data);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast({
+        title: "Fetch Error",
+        description: error.message || "An error occurred while fetching data.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -47,16 +57,45 @@ const Modal = ({ btnCaption, title, type }) => {
   };
 
   const handleSubmit = async () => {
+    // Validation
+    if (!account || !amount || !cat || !selectedDate) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const calculatedBudgetLeft = budget
+      ? parseFloat(budget) - parseFloat(amount)
+      : 0;
+
+    if (
+      type === "Expense" &&
+      calculatedBudgetLeft &&
+      parseFloat(amount) > calculatedBudgetLeft
+    ) {
+      toast({
+        title: `Budget Exceeded`,
+        description: `Remaining Budget: ${
+          calculatedBudgetLeft || "N/A"
+        }. Entered amount exceeds the budget for ${cat || "N/A"}.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     const payload = {
       userId,
       account,
       description,
       amount: parseFloat(amount),
       category: cat,
+      budgetLeft: calculatedBudgetLeft,
       type,
       date: new Date(selectedDate).toISOString(),
     };
-    console.log(payload);
 
     try {
       const response = await fetch("/api/transaction", {
@@ -68,14 +107,26 @@ const Modal = ({ btnCaption, title, type }) => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to submit data");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to submit data.");
       }
 
       const result = await response.json();
-      console.log("Submission successful:", result);
-      setIsModalOpen(false); // Close the modal on successful submission
+
+      toast({
+        title: "Submission Successful",
+        description: `${result.message} for category: ${cat || "N/A"}.`,
+        variant: "success",
+      });
+
+      setIsModalOpen(false);
     } catch (error) {
-      console.error("Error submitting data:", error);
+      toast({
+        title: "Submission Failed",
+        description:
+          error.message || "An error occurred while submitting data.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -96,7 +147,7 @@ const Modal = ({ btnCaption, title, type }) => {
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="account" className="text-left">
-              Account Name
+              Account
             </Label>
             <Input
               id="account"
@@ -134,7 +185,12 @@ const Modal = ({ btnCaption, title, type }) => {
           </div>
         </div>
         <div>
-          <Combobox categories={category} onSelect={setCat} />
+          <Combobox
+            categories={category}
+            onSelect={setCat}
+            setBudgetAmount={setBudget}
+            type={type}
+          />
         </div>
         <div className="grid gap-4 py-4">
           <DatePicker onPick={pickDate} />

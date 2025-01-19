@@ -1,48 +1,64 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+
 const prisma = new PrismaClient();
 
-// export async function POST(request) {
-//   const { userId } = await auth();
-//   const body = await request.json();
+export async function POST(request, { params }) {
+  const { type } = await params;
+  if (!type) {
+    return NextResponse.json({ message: "Type is required" }, { status: 400 });
+  }
 
-//   // Make sure the body contains the correct data format
-//   if (!Array.isArray(body)) {
-//     return NextResponse.json(
-//       { message: "Invalid data format. Expected an array." },
-//       { status: 400 }
-//     );
-//   }
+  const { userId } = await auth();
+  if (!userId) {
+    redirect("/sign-in");
+  }
 
-//   try {
-//     // Prepare the data for insertion by ensuring 'amount' is a number
-//     const dataToInsert = body.map((item) => ({
-//       userId: userId,
-//       name: item.category,
-//       type: item.type,
-//       amount: parseFloat(item.amount), // Ensure amount is a number
-//     }));
+  const body = await request.json();
 
-//     // Insert the data into the database using Prisma
-//     const result = await prisma.category.createMany({
-//       data: dataToInsert,
-//     });
+  // Check if the category already exists
+  const existingCategory = await prisma.category.findUnique({
+    where: {
+      userId_name: {
+        userId: userId,
+        name: body.category, // Check if a category with this name and userId exists
+      },
+    },
+  });
 
-//     // Return a success response with the count of inserted records
-//     return NextResponse.json({
-//       message: `${result.count} records inserted successfully.`,
-//     });
-//   } catch (error) {
-//     console.error("Error inserting data:", error.message);
-//     return NextResponse.json(
-//       { message: "Error inserting data.", error: error.message },
-//       { status: 500 }
-//     );
-//   } finally {
-//     await prisma.$disconnect(); // Ensure Prisma disconnects after operation
-//   }
-// }
+  if (existingCategory) {
+    return NextResponse.json({
+      error: `Category "${body.category}" already exists.`,
+    });
+  }
+
+  try {
+    const dataToInsert = {
+      userId: userId,
+      name: body.category,
+      type: type,
+      amount: parseFloat(body.amount),
+    };
+
+    const result = await prisma.category.create({
+      data: dataToInsert,
+    });
+
+    return NextResponse.json({
+      message: `New category "${body.category}" inserted successfully.`,
+    });
+  } catch (error) {
+    console.error("Error inserting data:", error.message);
+    return NextResponse.json(
+      { message: "Error inserting data.", error: error.message },
+      { status: 500 }
+    );
+  } finally {
+    await prisma.$disconnect(); // Ensure Prisma disconnects after operation
+  }
+}
 
 export async function GET(request, { params }) {
   const { type } = await params;
@@ -51,7 +67,7 @@ export async function GET(request, { params }) {
   }
   const { userId } = await auth();
   if (!userId) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    redirect("/sign-in");
   }
 
   try {
