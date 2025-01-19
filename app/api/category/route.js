@@ -37,6 +37,7 @@ export async function POST(request) {
       name: item.category,
       type: item.type,
       amount: parseFloat(item.amount),
+      budgetLeft: parseFloat(item.amount),
     }));
 
     const result = await prisma.category.createMany({
@@ -70,6 +71,7 @@ export async function GET() {
         name: true,
         type: true,
         amount: true,
+        budgetLeft: true,
       },
     });
 

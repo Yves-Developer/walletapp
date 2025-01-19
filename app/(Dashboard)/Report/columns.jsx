@@ -81,6 +81,80 @@ export const createColumns = (toast, setData) => [
     },
   },
   {
+    accessorKey: "budgetLeft",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          BudgetLeft
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const budgetLeft = parseFloat(row.getValue("budgetLeft"));
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(budgetLeft);
+
+      return <div className="font-medium">{formatted}</div>;
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+
+      // Define color classes based on status
+      let colorClass = "";
+      let bgClass = "";
+
+      // Set colors based on the status
+      if (status === "Over Budget") {
+        colorClass = "text-red-500";
+        bgClass = "bg-red-500/10";
+      } else if (status === "Under Budget") {
+        colorClass = "text-green-500";
+        bgClass = "bg-green-500/10";
+      } else if (status === "On Budget") {
+        colorClass = "text-blue-500";
+        bgClass = "bg-blue-500/10";
+      } else if (status === "Over Achieved") {
+        colorClass = "text-purple-500";
+        bgClass = "bg-purple-500/10";
+      } else if (status === "Good") {
+        colorClass = "text-green-500";
+        bgClass = "bg-green-500/10";
+      }
+
+      return (
+        <div
+          className={clsx(
+            "flex items-center justify-center rounded-sm px-4 py-2 font-medium",
+            colorClass,
+            bgClass
+          )}
+        >
+          {status}
+        </div>
+      );
+    },
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
       const budget = row.original;
