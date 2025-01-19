@@ -31,7 +31,7 @@ const Home = () => {
   const [item, setItem] = useState([new Date().getFullYear()]);
   const [summaryLoading, setSummaryLoading] = useState(false);
   const [periodsLoading, setPeriodsLoading] = useState(false);
-  useEffect(() => {
+  const fetchedData = () => {
     setSummaryLoading(true);
     fetch(`/api/summary?from=${from}&to=${to}`)
       .then((response) => response.json())
@@ -42,9 +42,11 @@ const Home = () => {
         console.error("error:", error.message);
       })
       .finally(() => setSummaryLoading(false));
-  }, [from, to]);
-
+  };
   useEffect(() => {
+    fetchedData();
+  }, [from, to]);
+  const freshPeriod = () => {
     setPeriodsLoading(true);
     fetch(`/api/history-period`)
       .then((response) => response.json())
@@ -55,11 +57,18 @@ const Home = () => {
         console.error("error:", error.message);
       })
       .finally(() => setPeriodsLoading(false));
+  };
+  useEffect(() => {
+    freshPeriod();
   }, []);
   return (
     <section className="w-full py-[80px] px-2">
       <Wrapper>
-        <Overview trackDate={setSelectedDate} />
+        <Overview
+          trackDate={setSelectedDate}
+          setFetch={fetchedData}
+          setPeriod={freshPeriod}
+        />
         <Container>
           <Card>
             <div className="flex items-center justify-between p-3">

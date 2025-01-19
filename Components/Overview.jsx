@@ -4,11 +4,12 @@ import { Separator } from "./ui/separator";
 import { DateRangePicker } from "./ui/date-range-picker";
 import Modal from "./Modal";
 import { useState } from "react";
-const Overview = ({ trackDate }) => {
+const Overview = ({ trackDate, setFetch, setPeriod }) => {
   const [values, setValues] = useState({
     from: new Date(new Date().setDate(new Date().getDate() - 30)), // 30 days ago
     to: new Date(), // Today
   });
+  const [freshData, setFreshData] = useState(false);
   return (
     <>
       <div className="flex flex-col items-start sm:flex-row sm:items-center justify-between py-6 sm:py-9 w-full bg-background/80 backdrop-blur-sm">
@@ -17,11 +18,21 @@ const Overview = ({ trackDate }) => {
         </h2>
         <div className="flex flex-col space-y-2 sm:space-y-0 sm:flex-row sm:space-x-2">
           <div className="flex space-x-2 mb-2">
-            <Modal btnCaption="New Income" title="Add Income" type="Income" />
+            <Modal
+              btnCaption="New Income"
+              title="Add Income"
+              type="Income"
+              setFetchData={setFetch}
+              setFreshData={setFreshData}
+              setPeriod={setPeriod}
+            />
             <Modal
               btnCaption="New Expense"
               title="Add Expense"
               type="Expense"
+              setFetchData={setFetch}
+              setFreshData={setFreshData}
+              setPeriod={setPeriod}
             />
           </div>
           <DateRangePicker
@@ -38,7 +49,7 @@ const Overview = ({ trackDate }) => {
         </div>
       </div>
       <Separator className="mb-4 mt-2" />
-      <StatsCards dateRange={values} />
+      <StatsCards dateRange={values} freshData={freshData} />
     </>
   );
 };

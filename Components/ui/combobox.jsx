@@ -30,7 +30,13 @@ import { Label } from "./label";
 import { Input } from "./input";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "./skeleton";
-export function Combobox({ categories, onSelect, setBudgetAmount, type }) {
+export function Combobox({
+  categories,
+  onSelect,
+  setBudgetAmount,
+  type,
+  refetchCategories,
+}) {
   const { toast } = useToast();
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(""); // State to track the selected category
@@ -97,6 +103,7 @@ export function Combobox({ categories, onSelect, setBudgetAmount, type }) {
           variant: "destructive",
         });
       }
+      refetchCategories();
     } catch (error) {
       toast({
         title: "Submission Failed",

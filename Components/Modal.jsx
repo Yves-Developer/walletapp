@@ -16,7 +16,14 @@ import { DatePicker } from "./ui/datepicker";
 import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { useToast } from "@/hooks/use-toast";
-const Modal = ({ btnCaption, title, type }) => {
+const Modal = ({
+  btnCaption,
+  title,
+  type,
+  setFetchData,
+  setFreshData,
+  setPeriod,
+}) => {
   const { userId } = useAuth();
   const [account, setAccount] = useState("");
   const [description, setDescription] = useState("");
@@ -55,7 +62,9 @@ const Modal = ({ btnCaption, title, type }) => {
     setIsModalOpen(true);
     fetchData(type);
   };
-
+  const refetchCategories = () => {
+    fetchData(type);
+  };
   const handleSubmit = async () => {
     // Validation
     if (!account || !amount || !cat || !selectedDate) {
@@ -118,7 +127,9 @@ const Modal = ({ btnCaption, title, type }) => {
         description: `${result.message} for category: ${cat || "N/A"}.`,
         variant: "success",
       });
-
+      setFetchData();
+      setPeriod();
+      setFreshData((prev) => !prev);
       setIsModalOpen(false);
     } catch (error) {
       toast({
@@ -190,6 +201,7 @@ const Modal = ({ btnCaption, title, type }) => {
             onSelect={setCat}
             setBudgetAmount={setBudget}
             type={type}
+            refetchCategories={refetchCategories}
           />
         </div>
         <div className="grid gap-4 py-4">

@@ -5,7 +5,7 @@ import { TrendingDown, TrendingUp, Wallet } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
 
-const StatsCards = ({ dateRange }) => {
+const StatsCards = ({ dateRange, freshData }) => {
   const [stats, setStats] = useState({ income: 0, expense: 0 });
   const from = dateRange?.from
     ? new Date(dateRange.from).toISOString()
@@ -14,8 +14,7 @@ const StatsCards = ({ dateRange }) => {
     ? new Date(dateRange.to).toISOString()
     : new Date().toISOString();
   const [statsLoading, setStatsLoading] = useState(false);
-
-  useEffect(() => {
+  const fetchedBalance = () => {
     setStatsLoading(true);
     fetch(`/api/balance?to=${to}&from=${from}`)
       .then((response) => response.json())
@@ -27,7 +26,10 @@ const StatsCards = ({ dateRange }) => {
         console.error("Error fetching data:", error.message);
       })
       .finally(() => setStatsLoading(false));
-  }, [from, to]);
+  };
+  useEffect(() => {
+    fetchedBalance();
+  }, [from, to, freshData]);
 
   return (
     <div className="flex flex-col sm:flex-row w-full gap-4">
