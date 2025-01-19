@@ -18,7 +18,7 @@ CREATE TABLE "Category" (
     "name" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "amount" REAL NOT NULL,
-    "budgetLeft" REAL NOT NULL DEFAULT 0,
+    "budgetLeft" REAL NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
