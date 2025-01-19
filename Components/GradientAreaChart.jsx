@@ -12,23 +12,16 @@ import {
   defs,
 } from "recharts";
 
-// const data = [
-//   { month: "Jan", Income: 400 },
-//   { month: "Feb", Income: 300 },
-//   { month: "Mar", Income: 200 },
-//   { month: "Apr", Income: 278 },
-//   { month: "May", Income: 189 },
-//   { month: "Jun", Income: 239 },
-//   { month: "Jul", Income: 349 },
-//   { month: "Aug", Income: 210 },
-// ];
-
-const GradientAreaChart = ({ tabSelected, year }) => {
+const GradientAreaChart = ({ tabSelected, year, month }) => {
   const tabValue = tabSelected || "month";
-  const selectedYear = year || "selectedYear";
+  const selectedYear = year || new Date().getFullYear();
+  const selectedMonth = new Date(`${month} 1,${year}`).getMonth();
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch(`/api/history?timeframe=${tabSelected}&year=${selectedYear}`)
+    console.log(selectedMonth);
+    fetch(
+      `/api/history?timeframe=${tabSelected}&year=${selectedYear}&month=${selectedMonth}`
+    )
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -36,7 +29,7 @@ const GradientAreaChart = ({ tabSelected, year }) => {
       .catch((error) => {
         console.error("Fetching error: ", error.message);
       });
-  }, [tabValue, selectedYear]);
+  }, [tabValue, selectedYear, selectedMonth]);
 
   const ChartData =
     tabValue === "year"

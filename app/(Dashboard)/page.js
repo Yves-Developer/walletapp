@@ -23,9 +23,11 @@ const Home = () => {
   });
   const [selectedTab, setSelectedTab] = useState("month");
   const [info, setInfo] = useState([]);
-  const [year, setYear] = useState("2025");
+  const [year, setYear] = useState(String(new Date().getFullYear()));
+  const [month, setMonth] = useState("January");
   const from = new Date(seletcedDate.from).toISOString();
   const to = new Date(seletcedDate.to).toISOString();
+  const [item, setItem] = useState([new Date().getFullYear()]);
   useEffect(() => {
     fetch(`/api/summary?from=${from}&to=${to}`)
       .then((response) => response.json())
@@ -36,23 +38,23 @@ const Home = () => {
         console.error("error:", error.message);
       });
   }, [from, to]);
+  useEffect(() => {
+    fetch(`/api/history-period`)
+      .then((response) => response.json())
+      .then((data) => {
+        setItem(data);
+      })
+      .catch((error) => {
+        console.error("error:", error.message);
+      });
+  }, []);
   return (
     <section className="w-full py-[80px] px-2">
       <Wrapper>
         <Overview trackDate={setSelectedDate} />
         <Container>
           <Card>
-            <div className="flex justify-between p-3">
-              <CardTitle>Monthly Overview</CardTitle>
-              <Select value={year} onValueChange={setYear}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="2025">2025</SelectItem>
-                  <SelectItem value="2024">2024</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="flex items-center justify-between p-3">
               <Tabs
                 defaultValue="month"
                 value={selectedTab}
@@ -63,9 +65,45 @@ const Home = () => {
                   <TabsTrigger value="year">Year</TabsTrigger>
                 </TabsList>
               </Tabs>
+              <Select value={year} onValueChange={setYear}>
+                <SelectTrigger className="w-[90px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {item.map((i, index) => (
+                    <SelectItem value={String(i)} key={index}>
+                      {i}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {selectedTab === "month" && (
+                <Select value={month} onValueChange={setMonth}>
+                  <SelectTrigger className="w-[130px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((month) => {
+                      const monthStr = new Date(year, month, 1).toLocaleString(
+                        "default",
+                        { month: "long" }
+                      );
+                      return (
+                        <SelectItem value={monthStr} key={month}>
+                          {monthStr}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+              )}
             </div>
             <CardContent>
-              <GradientAreaChart tabSelected={selectedTab} year={year} />
+              <GradientAreaChart
+                tabSelected={selectedTab}
+                year={year}
+                month={month}
+              />
             </CardContent>
           </Card>
           <Card>

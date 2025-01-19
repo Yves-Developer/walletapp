@@ -9,6 +9,7 @@ export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const timeframe = searchParams.get("timeframe");
   const year = parseInt(searchParams.get("year"));
+  const month = parseInt(searchParams.get("month"));
   console.log(year);
   if (!userId) {
     redirect("/sign-in");
@@ -56,7 +57,7 @@ export async function GET(request) {
           where: {
             userId,
             year: year,
-            month: 0,
+            month: month,
           },
           _sum: {
             expense: true,
@@ -79,7 +80,7 @@ export async function GET(request) {
           }
           history.push({
             year: year,
-            month: 0,
+            month: month,
             expense,
             income,
             day: i,
