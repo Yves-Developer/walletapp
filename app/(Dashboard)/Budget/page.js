@@ -1,9 +1,14 @@
 "use client";
+
 import { useState, useEffect } from "react";
-import Wrapper from "@/Components/Wrapper";
-import { DataTable } from "@/Components/ui/data-table";
-import { columns } from "./columns";
+import Wrapper from "@/components/Wrapper";
+import { DataTable } from "@/components/ui/data-table";
+import { createColumns } from "./columns";
+import { useToast } from "@/hooks/use-toast";
+import Header from "@/Components/Header";
+
 export default function Budget() {
+  const { toast } = useToast();
   const [data, setData] = useState([]);
   const [budgetLoading, setBudgetLoading] = useState(false);
 
@@ -25,9 +30,12 @@ export default function Budget() {
       .finally(() => setBudgetLoading(false));
   }, []);
 
+  const columns = createColumns(toast, setData); // Pass toast and setData to columns
+
   return (
     <div className="py-20">
       <Wrapper>
+        <Header title="Set/Load Budget" />
         <DataTable columns={columns} data={data} isLoading={budgetLoading} />
       </Wrapper>
     </div>

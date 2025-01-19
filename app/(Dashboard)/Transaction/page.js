@@ -5,6 +5,7 @@ import { columns } from "./columns";
 import Wrapper from "@/Components/Wrapper";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
+import Header from "@/Components/Header";
 
 export default function Transaction() {
   const [data, setData] = useState([]);
@@ -34,6 +35,7 @@ export default function Transaction() {
   return (
     <div className="py-20">
       <Wrapper>
+        <Header title="Transaction" />
         <DataTable
           columns={columns}
           data={formattedData}

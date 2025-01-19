@@ -1,24 +1,25 @@
 "use client";
-import { format } from "date-fns";
-import { useEffect, useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import {
-  AreaChart,
-  Area,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
+  Legend,
   ResponsiveContainer,
-  defs,
 } from "recharts";
-import { Skeleton } from "./ui/skeleton";
+import { format } from "date-fns";
 
-const GradientAreaChart = ({ tabSelected, year, month }) => {
+const MyBarChart = ({ tabSelected, year, month }) => {
   const tabValue = tabSelected || "month";
   const selectedYear = year || new Date().getFullYear();
   const selectedMonth = new Date(`${month} 1,${year}`).getMonth();
   const [data, setData] = useState([]);
   const [chartLoading, setChartLoading] = useState(false);
+
   useEffect(() => {
     setChartLoading(true);
     fetch(
@@ -56,26 +57,23 @@ const GradientAreaChart = ({ tabSelected, year, month }) => {
         });
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      {chartLoading ? (
-        <Skeleton className="w-full h-[200px]" />
-      ) : ChartData.length === 0 ? (
-        <p className="text-center text-gray-500">No data available.</p> // Display when ChartData is empty
-      ) : (
-        <AreaChart
+    <div className="h-[400px] w-full">
+      <ResponsiveContainer>
+        <BarChart
           data={ChartData}
-          margin={{ top: 30, right: 30, left: 0, bottom: 0 }}
+          margin={{
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
         >
-          {/* Background Grid */}
           <CartesianGrid strokeDasharray="2 2" vertical={false} />
-
           {/* X & Y Axis */}
-          <XAxis dataKey={tabSelected === "year" ? "month" : "day"} />
+          <XAxis dataKey={tabValue === "year" ? "month" : "day"} />
           <YAxis />
-
           {/* Tooltip */}
           <Tooltip />
-
           {/* Gradient Definition */}
           <defs>
             <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
@@ -87,24 +85,12 @@ const GradientAreaChart = ({ tabSelected, year, month }) => {
               <stop offset="95%" stopColor="#DC2626" stopOpacity={0} />
             </linearGradient>
           </defs>
-
-          {/* Area Component with Gradient */}
-          <Area
-            type="linear"
-            dataKey="Income"
-            stroke="#16a34a"
-            fill="url(#colorIncome)"
-          />
-          <Area
-            type="linear"
-            dataKey="Expense"
-            stroke="#DC2626"
-            fill="url(#colorExpense)"
-          />
-        </AreaChart>
-      )}
-    </ResponsiveContainer>
+          <Bar dataKey="Income" fill="url(#colorIncome)" />
+          <Bar dataKey="Expense" fill="url(#colorExpense)" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   );
 };
 
-export default GradientAreaChart;
+export default MyBarChart;
