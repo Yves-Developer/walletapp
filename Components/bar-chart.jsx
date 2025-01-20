@@ -12,7 +12,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { format } from "date-fns";
-
 const MyBarChart = ({ tabSelected, year, month }) => {
   const tabValue = tabSelected || "month";
   const selectedYear = year || new Date().getFullYear();
