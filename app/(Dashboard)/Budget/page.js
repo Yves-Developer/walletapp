@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Wrapper from "@/components/Wrapper";
-import { DataTable } from "@/components/ui/data-table";
+import Wrapper from "@/Components/Wrapper";
+import { DataTable } from "@/Components/ui/data-table";
 import { createColumns } from "./columns";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/Components/Header";

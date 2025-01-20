@@ -1,7 +1,7 @@
 "use client";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/Components/ui/dropdown-menu";
 import clsx from "clsx";
 //Column Definition
 export const columns = [

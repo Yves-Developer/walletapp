@@ -7,7 +7,7 @@ import {
   DialogTrigger,
   DialogFooter,
   DialogClose,
-} from "@/components/ui/dialog";
+} from "@/Components/ui/dialog";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
@@ -30,15 +30,12 @@ const Modal = ({
   const [amount, setAmount] = useState("");
   const [budget, setBudget] = useState(null);
   const [category, setCategory] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [selectedDate, pickDate] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [cat, setCat] = useState("");
   const { toast } = useToast();
   const fetchData = async (type) => {
     if (!type) return;
-
-    setLoading(true);
     try {
       const response = await fetch(`/api/category/${type}`);
       if (!response.ok) {
@@ -53,8 +50,6 @@ const Modal = ({
         description: error.message || "An error occurred while fetching data.",
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
     }
   };
 

@@ -1,6 +1,6 @@
 "use client";
 import { MoreHorizontal, ArrowUpDown, Trash } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,7 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/Components/ui/dropdown-menu";
 import clsx from "clsx";
 
 // Define columns as a function to accept toast and setData
