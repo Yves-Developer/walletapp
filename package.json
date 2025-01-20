@@ -2,12 +2,13 @@
   "name": "walletapp",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
+"scripts": {
+  "dev": "next dev",
+  "build": "next build && npx prisma generate",
+  "start": "next start",
+  "lint": "next lint"
+}
+,
   "dependencies": {
     "@clerk/nextjs": "^6.9.10",
     "@prisma/client": "^6.2.1",
