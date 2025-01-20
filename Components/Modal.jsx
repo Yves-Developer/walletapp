@@ -7,7 +7,7 @@ import {
   DialogTrigger,
   DialogFooter,
   DialogClose,
-} from "@/Components/ui/dialog";
+} from "./ui/dialog";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
