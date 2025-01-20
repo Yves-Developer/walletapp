@@ -12,7 +12,7 @@ import {
   CommandItem,
   CommandList,
 } from "./command";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Popover, PopoverTrigger, PopoverContent } from "./popover";
 import {
   Dialog,
   DialogContent,
