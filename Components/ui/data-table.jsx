@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { Papa } from "papaparse";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import {
   flexRender,
   getCoreRowModel,
@@ -18,14 +18,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/Components/ui/table";
 import { Input } from "@/Components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/Components/ui/dropdown-menu";
 import { generateCsv, download, mkConfig } from "export-to-csv";
 import { Download, Settings2, Upload } from "lucide-react";
 import CSVupload from "@/app/(Dashboard)/upload/csv-upload";
