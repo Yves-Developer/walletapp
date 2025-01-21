@@ -35,7 +35,7 @@
 
 
 ### Reports Table
-![Report View](/public/3.png)
+![Report View](/public/4.png)
 
 ### Reports Graph
 ![Report View](/public/5.png)
