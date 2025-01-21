@@ -11,12 +11,13 @@
 ---
 
 ## Tech Stack and Technologies Used
-- **Framework**: Next.js
-- **CSS Framework**: TailwindCSS
-- **State Management**: Context API
-- **Database**: PostgreSQL (supports SQLite in development)
-- **Authentication**: Clerk.js
-- **Charting Library**: Recharts
+- **Framework**: ` Next.js`
+- **CSS Framework**: ` TailwindCSS`
+- **CSV Export**: ` export-to-csv`
+- **Parse CSv**: `papaparse`
+- **Database**: `PostgreSQL` (supports SQLite in development)
+- **Authentication**: `Clerk.com`
+- **Charting Library**: `Recharts`
 
 ---
 
@@ -53,7 +54,7 @@
 ## How to Use
 
 ### Access the Application
-Navigate to [WalletApp on Vercel](https://walletapp-zeta.vercel.app).
+Navigate to [WalletApp](https://walletapp-zeta.vercel.app).
 
 **Login**: Use Gmail or GitHub to sign in.
 
@@ -62,7 +63,7 @@ Navigate to [WalletApp on Vercel](https://walletapp-zeta.vercel.app).
 ### Steps to Get Started
 1. **Load Your Budget**:
    - Use a CSV file with the format: `category`, `type`, and `amount`.
-   - Download a sample CSV: [TestData CSV to Load as Budget](#).
+   - Download a sample CSV: [TestData CSV to Load as Budget](/public/newTestData.csv).
 2. **Track Transactions**:
    - Record each In and Out transaction as they occur.
 3. **View Summary**:
@@ -121,4 +122,4 @@ Open http://localhost:3000 in your browser.
 
 # Feel free to connect
 
- ## [Social Meadia]9https://yvesdc.vercel.app#contact)
+ ## [Social Meadia](https://yvesdc.vercel.app#contact)
