@@ -23,23 +23,29 @@
 ## Project UI Overview
 
 ### Dashboard
-![Dashboard View](https://example.com/path-to-image/dashboard.png)
+![Dashboard View](/public/1.png)
 
 
 ### Transaction Management
-![Dashboard View](https://example.com/path-to-image/dashboard.png)
+![transaction View](/public/3.png)
 
 
 ### Budget Management
-![Dashboard View](https://example.com/path-to-image/dashboard.png)
+![Budget View](/public/2.png)
 
 
-### Reports
-![Dashboard View](https://example.com/path-to-image/dashboard.png)
+### Reports Table
+![Report View](/public/4.png)
+
+### Reports Graph
+![Report View](/public/5.png)
+
+### Reports Sumary Card
+![Report View](/public/6.png)
 
 
 ### Add Expense and Income Modal
-![Dashboard View](https://example.com/path-to-image/dashboard.png)
+![Add Income Nad exoense Modal](/public/7.png)
 
 
 ---
@@ -109,6 +115,10 @@ npm run dev
 Open http://localhost:3000 in your browser.
 
 # Future Improvements
-`. Integration with Bank APIs for direct transaction tracking.
+1. Integration with Bank APIs for direct transaction tracking.
 2. Integration with Mobile Money (MoMo) APIs.
 3. Budget validation before payments to ensure users are aware of their budget status.
+
+# Feel free to connect
+
+ ## [Social Meadia]9https://yvesdc.vercel.app#contact)
