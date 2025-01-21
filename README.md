@@ -23,23 +23,23 @@
 ## Project UI Overview
 
 ### Dashboard
-![Dashboard View](https://example.com/path-to-image/dashboard.png)
+![Dashboard View](/public/3.png)
 
 
 ### Transaction Management
-![Dashboard View](https://example.com/path-to-image/dashboard.png)
+![transaction View](/public/4.png)
 
 
 ### Budget Management
-![Dashboard View](https://example.com/path-to-image/dashboard.png)
+![Budget View](/public/6.png)
 
 
 ### Reports
-![Dashboard View](https://example.com/path-to-image/dashboard.png)
+![Report View](/public/5.png)
 
 
 ### Add Expense and Income Modal
-![Dashboard View](https://example.com/path-to-image/dashboard.png)
+![Add Income Nad exoense Modal](/public/7.png)
 
 
 ---
