@@ -1,0 +1,11 @@
+category,type,amount
+Food,Expense,250.00
+Rent,Expense,1200.00
+Salary,Income,3000.00
+Entertainment,Expense,150.00
+Utilities,Expense,100.00
+Freelance Work,Income,500.00
+Savings,Expense,400.00
+Transportation,Expense,200.00
+Groceries,Expense,300.00
+Investment,Income,1000.00
