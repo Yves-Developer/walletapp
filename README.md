@@ -27,21 +27,21 @@
 
 
 ### Transaction Management
-![transaction View](/public/2.png)
+![transaction View](/public/3.png)
 
 
 ### Budget Management
-![Budget View](/public/6.png)
+![Budget View](/public/2.png)
 
 
 ### Reports Table
 ![Report View](/public/3.png)
 
 ### Reports Graph
-![Report View](/public/4.png)
+![Report View](/public/5.png)
 
 ### Reports Sumary Card
-![Report View](/public/5.png)
+![Report View](/public/6.png)
 
 
 ### Add Expense and Income Modal
