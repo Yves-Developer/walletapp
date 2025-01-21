@@ -23,18 +23,24 @@
 ## Project UI Overview
 
 ### Dashboard
-![Dashboard View](/public/3.png)
+![Dashboard View](/public/1.png)
 
 
 ### Transaction Management
-![transaction View](/public/4.png)
+![transaction View](/public/2.png)
 
 
 ### Budget Management
 ![Budget View](/public/6.png)
 
 
-### Reports
+### Reports Table
+![Report View](/public/3.png)
+
+### Reports Graph
+![Report View](/public/4.png)
+
+### Reports Sumary Card
 ![Report View](/public/5.png)
 
 
@@ -109,6 +115,10 @@ npm run dev
 Open http://localhost:3000 in your browser.
 
 # Future Improvements
-`. Integration with Bank APIs for direct transaction tracking.
+1. Integration with Bank APIs for direct transaction tracking.
 2. Integration with Mobile Money (MoMo) APIs.
 3. Budget validation before payments to ensure users are aware of their budget status.
+
+# Feel free to connect
+
+ ## (Social Meadia)[https://yvesdc.vercel.app#contact]
